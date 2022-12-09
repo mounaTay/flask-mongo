@@ -1,0 +1,46 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mongodb
+  namespace: mongo
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:6
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: "mongo-data-dir"
+              mountPath: "/data/db"
+      volumes:
+      - name: "mongo-data-dir"
+        persistentVolumeClaim:
+          claimName: pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+  namespace: mongo
+  labels:
+    name: mongodb-service
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - port: 27017
+      name: http
+  type: NodePort

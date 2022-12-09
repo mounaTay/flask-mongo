@@ -1,0 +1,4 @@
+flask
+pandas==1.5.2
+pymongo
+requests

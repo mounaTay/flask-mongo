@@ -1,0 +1,15 @@
+<html>
+<body>
+<div>
+    <div>
+        {% if objects %}
+            {% for (image, obj) in objects %}
+                <img src="data:image/jpeg;base64, {{ image }}" alt="myImage" width="200" height="200"/>
+                <p> {{ obj }}</p>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+</div>
+</body>
+</html>
