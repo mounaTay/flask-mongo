@@ -38,14 +38,17 @@ class DB:
 
 
 class PersonDetails(DB):
+    id_counter = 0  # class attribute, used to assign ids to every new person added to the database
+
     def __init__(self, url: str = "https://thispersondoesnotexist.com/image", input: str = "babynames-clean.csv"):
         super().__init__()
         self.url = url
         self.input = input
 
     def __call__(self, *args, **kwargs):
-        self.name, id = self.assign_name()
-        self.my_json = {"_id": id, "name": self.name}
+        self.name = self.assign_name()
+        self.my_json = {"_id": str(PersonDetails.id_counter), "name": self.name}
+        PersonDetails.id_counter += 1
         self.download_file()
         self.my_json["faces"] = self.face_recognition()["faces"]
         self.my_json["gender"] = self.genderize()
@@ -65,13 +68,12 @@ class PersonDetails(DB):
             self.my_json["image"] = self.fs.put(r.content, filename=f"{self.name}.jpeg")
             f.write(r.content)
 
-    def assign_name(self) -> (str, str):
+    def assign_name(self) -> str:
         """
         reads a csv using pandas and get a sample row out of it
-        :return: a random name from the csv and its row index
+        :return: a random name from the csv
         """
-        sample = pd.read_csv(self.input, names=["name", "gender"], index_col=False)["name"].sample()
-        return sample.values[0], str(sample.index.item())
+        return pd.read_csv(self.input, names=["name", "gender"], index_col=False)["name"].sample().values[0]
 
     def face_recognition(self):
         """
@@ -87,7 +89,7 @@ class PersonDetails(DB):
         }
 
         headers = {
-            "X-RapidAPI-Key": "39545edd84mshe7456cb90eee689p1dfda5jsnb29c79550052",
+            "X-RapidAPI-Key": os.getenv("RapidAPI_KEY", ""),
             "X-RapidAPI-Host": "faceplusplus-faceplusplus.p.rapidapi.com"
         }
 

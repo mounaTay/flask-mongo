@@ -13,7 +13,7 @@ It is currently composed of the following tree:
 │   ├── api.yaml
 │   ├── mongodb.yaml
 │   ├── pv.yaml
-│   └── secrets.yaml
+│   └── secrets.yaml # api keys for faceplusplus api
 ├── docs # docs and screenshots for the documentation
 ├── requirements.txt
 ├── src
@@ -48,6 +48,8 @@ In order to run this I'm assuming you already installed:
 3. create secrets to access the face recognition api
  
    `kubectl apply -f deployment/secrets.yaml`
+
+   if you don't already have [faceplusplus](https://www.faceplusplus.com/) keys, create an account and use the new keys to create secrets 
 4. build the docker image for our api in the current context
    `docker build -t api .`
 5. Before deploying the flask api, make sure you get the mongodb-service cluster-ip and add it to the deployment/api.yaml file under MONGO_CLIENT variable name

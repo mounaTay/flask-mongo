@@ -32,6 +32,11 @@ spec:
                secretKeyRef:
                  name: faceplusplus-creds
                  key: FACEPLUSPLUS_API_SECRET
+           - name: RapidAPI_KEY
+             valueFrom:
+               secretKeyRef:
+                 name: rapidapi-creds
+                 key: RapidAPI_KEY
            - name: MONGO_CLIENT
              value: "10.104.110.188:27017"
            - name: MONGO_DATABASE

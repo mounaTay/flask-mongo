@@ -6,8 +6,13 @@ app = Flask(__name__, template_folder='templates')
 
 
 @app.route('/')
-def hello():
-    return '<h1>Hello from Data4Geeks</h1>'
+def index():
+    return '<h1>Welcome</h1>' \
+           '<ul>' \
+           '<li><a href=/persons>list all persons</a></li>' \
+           '<li><a href=/generate>generate a random person</a></li>' \
+           '<li>use /persons?id=`id` to get a person by id</p></li>' \
+           '</ul>'
 
 
 @app.route('/persons', methods=['GET'])
