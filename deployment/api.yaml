@@ -22,25 +22,25 @@ spec:
           ports:
             - containerPort: 5000
           env:
-           - name: FACEPLUSPLUS_API_KEY
-             valueFrom:
-               secretKeyRef:
-                 name: faceplusplus-creds
-                 key: FACEPLUSPLUS_API_KEY
-           - name: FACEPLUSPLUS_API_SECRET
-             valueFrom:
-               secretKeyRef:
-                 name: faceplusplus-creds
-                 key: FACEPLUSPLUS_API_SECRET
-           - name: RapidAPI_KEY
-             valueFrom:
-               secretKeyRef:
-                 name: rapidapi-creds
-                 key: RapidAPI_KEY
-           - name: MONGO_CLIENT
-             value: "10.104.110.188:27017"
-           - name: MONGO_DATABASE
-             value: demo
+            - name: FACEPLUSPLUS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: faceplusplus-creds
+                  key: FACEPLUSPLUS_API_KEY
+            - name: FACEPLUSPLUS_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: faceplusplus-creds
+                  key: FACEPLUSPLUS_API_SECRET
+            - name: RapidAPI_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rapidapi-creds
+                  key: RapidAPI_KEY
+            - name: MONGO_CLIENT
+              value: "10.104.110.188:27017" # mongodb-service cluster-ip
+            - name: MONGO_DATABASE
+              value: demo
 ---
 apiVersion: v1
 kind: Service
@@ -51,9 +51,9 @@ metadata:
     name: api-service
 spec:
   ports:
-  - port: 5000
-    protocol: TCP
-    targetPort: 5000
+    - port: 5000
+      protocol: TCP
+      targetPort: 5000
   selector:
     app: api
-  type: LoadBalancer
+  type: LoadBalancer # provides a public ip to which external users can connect

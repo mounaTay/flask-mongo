@@ -25,15 +25,15 @@ spec:
             - name: "mongo-data-dir"
               mountPath: "/data/db"
       volumes:
-      - name: "mongo-data-dir"
-        persistentVolumeClaim:
-          claimName: pvc
+        - name: "mongo-data-dir"
+          persistentVolumeClaim:
+            claimName: pvc
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb-service
+  name: mongodb-service # responsible for enabling network access to the mongodb pod
   namespace: mongo
   labels:
     name: mongodb-service
