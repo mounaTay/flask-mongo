@@ -3,6 +3,7 @@ import pymongo
 import requests
 import os
 from bson.objectid import ObjectId
+from security import safe_requests
 
 
 class DB:
@@ -78,7 +79,7 @@ class PersonDetails(DB):
         :return: does not return
         """
 
-        response = requests.get(self.url)
+        response = safe_requests.get(self.url)
         if response.ok:
             with open(f"{self.name}.jpeg", 'wb') as f:
                 content = response.content
@@ -115,7 +116,7 @@ class PersonDetails(DB):
         get gender from genderize api based on the person's name
         :return: the person's gender
         """
-        response = requests.get(f"https://api.genderize.io?name={self.name}")
+        response = safe_requests.get(f"https://api.genderize.io?name={self.name}")
         if response.ok:
             return response.json()["gender"]
         else:
@@ -126,7 +127,7 @@ class PersonDetails(DB):
         get age from agify api based on the person's name
         :return: the person's age
         """
-        response = requests.get(f"https://api.agify.io?name={self.name}")
+        response = safe_requests.get(f"https://api.agify.io?name={self.name}")
         if response.ok:
             return response.json()["age"]
         else:
@@ -137,7 +138,7 @@ class PersonDetails(DB):
         get nationality from nationalize api based on the person's name
         :return: the person's nationality/country id or None in case of failure
         """
-        response = requests.get(f"https://api.nationalize.io?name={self.name}")
+        response = safe_requests.get(f"https://api.nationalize.io?name={self.name}")
         if response.ok:
             countries = response.json()["country"]
             countries.sort(key=lambda x: x["probability"], reverse=True)
